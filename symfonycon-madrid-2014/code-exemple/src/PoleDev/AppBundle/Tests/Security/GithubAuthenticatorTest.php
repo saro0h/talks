@@ -14,12 +14,15 @@ class GithubAuthenticatorTest extends \PHPUnit_Framework_TestCase
         $guzzleResponseObjectProphecy
             ->json()
             ->willReturn(array('access_token' => 'a_fake_access_token'))
+            ->shouldBeCalledTimes(10)
         ;
         $guzzleResponse = $guzzleResponseObjectProphecy->reveal();
 
         $guzzleRequestObjectProphecy = $this->prophet->prophesize('Guzzle\Http\Message\EntityEnclosingRequest');
-        $guzzleRequestObjectProphecy->send()->willReturn($guzzleResponse);
-
+        $guzzleRequestObjectProphecy
+            ->send()
+            ->willReturn($guzzleResponse)
+        ;
         $guzzleRequest = $guzzleRequestObjectProphecy->reveal();
 
         $clientObjectProphecy = $this->prophet->prophesize('Guzzle\Service\Client');
@@ -43,8 +46,10 @@ class GithubAuthenticatorTest extends \PHPUnit_Framework_TestCase
         $requestObjectProphecy = $this->prophet->prophesize('Symfony\Component\HttpFoundation\Request');
         $request = $requestObjectProphecy->reveal();
 
-        $githubAuthenticator = new GithubAuthenticator($client, $router, $logger, '', '');
+        $guzzleResponseObjectProphecy = $this->prophet->prophesize('Guzzle\Http\Message\Response');
+        $guzzleResponse = $guzzleResponseObjectProphecy->reveal();
 
+        $githubAuthenticator = new GithubAuthenticator($client, $router, $logger, '', '');
         $token = $githubAuthenticator->createToken($request, 'secure_area');
 
         $this->assertSame('a_fake_access_token', $token->getCredentials());
@@ -62,6 +67,7 @@ class GithubAuthenticatorTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        $this->prophet->checkPredictions();
         $this->prophet = null;
     }
 }
