@@ -1,0 +1,14 @@
+security:
+    providers:
+        github:
+            id: oauth.provider.github
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        secured_area:
+            pattern: ^/admin
+            simple_preauth:
+                authenticator: oauth.authenticator.github
