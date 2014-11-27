@@ -1,6 +1,6 @@
 <?php
 
-namespace PoleDev\AppBundle\Tests\Security;
+namespace PoleDev\AppBundle\Tests\SecurityProphecy;
 
 use PoleDev\AppBundle\Security\GithubProvider;
 use PoleDev\AppBundle\Model\User;

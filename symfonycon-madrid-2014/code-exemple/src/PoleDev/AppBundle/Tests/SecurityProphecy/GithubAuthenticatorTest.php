@@ -1,6 +1,6 @@
 <?php
 
-namespace PoleDev\AppBundle\Tests\Security;
+namespace PoleDev\AppBundle\Tests\SecurityProphecy;
 
 use PoleDev\AppBundle\Security\GithubAuthenticator;
 
@@ -14,7 +14,7 @@ class GithubAuthenticatorTest extends \PHPUnit_Framework_TestCase
         $guzzleResponseObjectProphecy
             ->json()
             ->willReturn(array('access_token' => 'a_fake_access_token'))
-            ->shouldBeCalledTimes(10)
+            ->shouldBeCalledTimes(1)
         ;
         $guzzleResponse = $guzzleResponseObjectProphecy->reveal();
 
